@@ -3,6 +3,7 @@ package com.strumenta.mpswizard
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.file.FileVisitDetails
 import org.gradle.api.file.FileVisitor
 import java.io.File
@@ -20,22 +21,26 @@ private fun Project.findMpsArtifactsConfiguration() = this.findConfiguration("mp
 class MpsWizardPlugin : Plugin<Project> {
     var autosettersRun = HashSet<String>()
 
+    private fun <T: Task>addTaskIfDoesNotExist(project: Project, name: String, clazz: Class<T>, extension: MpsWizardExtension) {
+        if (project.tasks.findByName(name) != null) {
+            println("not adding $name task, as it exists already")
+        } else {
+            project.tasks.register(name, clazz, this, extension)
+        }
+    }
+
     override fun apply(project: Project) {
+
+        val extension = project.extensions.create("mpsWizard", MpsWizardExtension::class.java)
+
         // TODO check in configuration if this is necessary
         //autoSetConfigurations(project)
         //autoSetDependencies(project)
 
-        if (project.tasks.findByName("resolveMps") != null) {
-            println("not adding resolveMps task, as it exists already")
-        } else {
-            project.tasks.register("resolveMps", ResolveMps::class.java, this)
-        }
+        addTaskIfDoesNotExist(project, "resolveMps", ResolveMps::class.java, extension)
+        addTaskIfDoesNotExist(project, "resolveMpsArtifacts", ResolveMpsArtifacts::class.java, extension)
+        addTaskIfDoesNotExist(project, "setupMpsProject", SetupMpsProject::class.java, extension)
 
-        if (project.tasks.findByName("setupMpsProject") != null) {
-            println("not adding setupMpsProject task, as it exists already")
-        } else {
-            project.tasks.register("setupMpsProject", SetupMpsProject::class.java, this)
-        }
 
 //        project.task("resolveMps") {
 //            it.
@@ -72,7 +77,7 @@ class MpsWizardPlugin : Plugin<Project> {
         project.repositories.maven { it.url = URI("https://projects.itemis.de/nexus/content/repositories/mbeddr") }
     }
 
-    fun autoSetDependencies(project: Project) {
+    fun autoSetDependencies(project: Project, extension: MpsWizardExtension) {
         if (checkOnlyOneRun("dependencies")) return
         // If mps dependencies are already set, do nothing, otherwise set the desired MPS version
         val mpsConf = project.findMpsConfiguration() ?: throw GradleException("no mps configuration")
@@ -121,6 +126,7 @@ class MpsWizardPlugin : Plugin<Project> {
             targetDir.delete()
         }
         val res = project.findConfiguration(configurationName)?.resolve()//.collect { project.zipTree(it) }
+        println("installing dependencies for $configurationName: ${res}")
         res?.forEach {
             val fileTree = project.zipTree(it)
             fileTree.visit(object : FileVisitor {
