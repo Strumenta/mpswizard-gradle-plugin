@@ -4,6 +4,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileVisitDetails
 import org.gradle.api.file.FileVisitor
 import java.io.File
@@ -54,13 +55,13 @@ class MpsWizardPlugin : Plugin<Project> {
 //        }
     }
 
-    private fun getMpsVersion(project: Project) : String {
-        // TODO support configuration in mpssetup
-        // TODO verify if mps dependencies is set and it contains an explicit version
-        val defaultMpsVersion = "2020.1.3"
-        println("using default MPS version: $defaultMpsVersion")
-        return defaultMpsVersion
-    }
+//    private fun getMpsVersion(project: Project, extension: MpsWizardExtension) : String {
+//        // TODO support configuration in mpssetup
+//        // TODO verify if mps dependencies is set and it contains an explicit version
+//        val defaultMpsVersion = "2020.1.3"
+//        println("using MPS version: $defaultMpsVersion")
+//        return defaultMpsVersion
+//    }
 
     private fun checkOnlyOneRun(name: String) : Boolean {
         return if (autosettersRun.contains(name)) {
@@ -77,16 +78,36 @@ class MpsWizardPlugin : Plugin<Project> {
         project.repositories.maven { it.url = URI("https://projects.itemis.de/nexus/content/repositories/mbeddr") }
     }
 
+    private fun addDependencyIfNotPresent(project: Project, configuration: Configuration,
+                                          group: String, name: String, versionCalculator: () -> String) {
+        val matchingDependency = configuration.dependencies.find {
+            it.group == group && it.name == name
+        }
+        if (matchingDependency == null) {
+            val version = versionCalculator()
+            println("${group}.${name} not present among dependencies, adding version $version")
+            project.dependencies.add(configuration.name, "$group:$name:$version")
+        } else {
+            println("${group}.${name} present among dependencies, not adding")
+        }
+    }
+
     fun autoSetDependencies(project: Project, extension: MpsWizardExtension) {
         if (checkOnlyOneRun("dependencies")) return
+
         // If mps dependencies are already set, do nothing, otherwise set the desired MPS version
         val mpsConf = project.findMpsConfiguration() ?: throw GradleException("no mps configuration")
         if (mpsConf.allDependencies.isEmpty()) {
-            println("no mps configuration dependency, adding default one")
-            project.dependencies.add("mps", "com.jetbrains:mps:${getMpsVersion(project)}")
+            println("no mps configuration dependency, adding version ${extension.actualMpsVersion}")
+            project.dependencies.add("mps", "com.jetbrains:mps:${extension.actualMpsVersion}")
         } else {
             println("mps configuration dependency present, not adding")
         }
+
+        val mpsArtifactsConf = project.findMpsArtifactsConfiguration()!!
+        addDependencyIfNotPresent(project, mpsArtifactsConf, "com.mbeddr", "platform") { extension.actualMbeddrVersion }
+        addDependencyIfNotPresent(project, mpsArtifactsConf, "com.mbeddr", "allScripts") { extension.actualMbeddrVersion }
+        addDependencyIfNotPresent(project, mpsArtifactsConf, "org.iets3", "opensource") { extension.actualIets3Version }
     }
 
     fun autoSetConfigurations(project: Project) {
@@ -96,7 +117,7 @@ class MpsWizardPlugin : Plugin<Project> {
             println("adding mps to configurations")
             project.configurations.create("mps")
         } else {
-            println("mps configuration already present, not adding")
+            println("mps configuration already present")
         }
         val mpsArtifactsConf = project.findMpsArtifactsConfiguration()
         if (mpsArtifactsConf == null) {

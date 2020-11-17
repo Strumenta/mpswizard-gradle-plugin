@@ -10,7 +10,7 @@ open class ResolveMps @Inject constructor(val mpsWizard: MpsWizardPlugin, val ex
     fun execute() {
         mpsWizard.autoSetRepositories(project)
         mpsWizard.autoSetConfigurations(project)
-        mpsWizard.autoSetDependencies(project)
+        mpsWizard.autoSetDependencies(project, extension)
         mpsWizard.installConfiguration(project, "mps")
     }
 }
