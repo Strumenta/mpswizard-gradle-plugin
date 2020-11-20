@@ -8,6 +8,11 @@ import javax.inject.Inject
 open class ValidateMpsWizardConfiguration @Inject constructor(val mpsWizard: MpsWizardPlugin,
                                                               val extension: MpsWizardExtension) : DefaultTask() {
 
+    init {
+        this.group = MPSWIZARD_TASKS_GROUP
+        this.description = "Validate the MPS Wizard configuration"
+    }
+
     @TaskAction
     fun execute() {
         val errors = extension.validate()

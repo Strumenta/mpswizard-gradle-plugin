@@ -15,6 +15,8 @@ private fun Project.findConfiguration(name: String) = this.configurations.find {
 private fun Project.findMpsConfiguration() = this.findConfiguration("mps")
 private fun Project.findMpsArtifactsConfiguration() = this.findConfiguration("mpsArtifacts")
 
+const val MPSWIZARD_TASKS_GROUP = "MPS Wizard"
+
 // Configuration:
 //
 // mpssetup { autosetconfigurations: true, mpsVersion: 2020.1.4 }

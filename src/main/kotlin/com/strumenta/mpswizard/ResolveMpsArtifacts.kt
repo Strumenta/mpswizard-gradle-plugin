@@ -8,6 +8,8 @@ open class ResolveMpsArtifacts @Inject constructor(val mpsWizard: MpsWizardPlugi
 
     init {
         this.dependsOn.add(ValidateMpsWizardConfiguration.TASK_NAME)
+        this.group = MPSWIZARD_TASKS_GROUP
+        this.description = "Download the dependencies used by the MPS Project"
     }
 
     @TaskAction

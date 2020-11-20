@@ -8,6 +8,8 @@ open class ResolveMps @Inject constructor(val mpsWizard: MpsWizardPlugin, val ex
 
     init {
         this.dependsOn.add(ValidateMpsWizardConfiguration.TASK_NAME)
+        this.group = MPSWIZARD_TASKS_GROUP
+        this.description = "Download a copy of MPS for running tests from the command line"
     }
 
     @TaskAction
