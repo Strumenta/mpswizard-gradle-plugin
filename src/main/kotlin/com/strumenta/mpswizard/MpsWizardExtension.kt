@@ -41,15 +41,32 @@ private fun listVersionsFromMetadata(url: URL) : List<String> {
 }
 
 open class MpsWizardExtension {
+
+    // MPS configuration
+
     var mpsVersion : String? = null
-    var mbeddrVersion : String? = null
-    var iets3Version : String? = null
     val actualMpsVersion : String
         get() = mpsVersion ?: "2020.1.3"
     val actualMajorMpsVersion : String?
-            get() =  deriveMajorMpsVersion(actualMpsVersion)
-    val actualMbeddrVersion : String get() = mbeddrVersion ?: findLatestMbeddrVersion(actualMpsVersion)
-    val actualIets3Version : String get() =  iets3Version ?: findLatestIets3Version(actualMpsVersion)
+        get() =  deriveMajorMpsVersion(actualMpsVersion)
+
+    // Mbeddr configuration
+
+    var useMbeddr : Boolean? = null
+    var mbeddrVersion : String? = null
+    val actualUseMbeddr
+        get() = useMbeddr == true || mbeddrVersion != null || actualUseIets3
+    val actualMbeddrVersion : String
+        get() = mbeddrVersion ?: findLatestMbeddrVersion(actualMpsVersion)
+
+    // Iets3 configuration
+
+    var useIets3 : Boolean? = null
+    var iets3Version : String? = null
+    val actualUseIets3
+        get() = useIets3 == true || iets3Version != null
+    val actualIets3Version : String
+        get() =  iets3Version ?: findLatestIets3Version(actualMpsVersion)
 
     private fun findLatestVersion(mpsVersion: String, baseUrl: String, componentName: String) : String {
         val actualMajorMpsVersion = actualMajorMpsVersion
@@ -87,6 +104,14 @@ open class MpsWizardExtension {
 
     fun findLatestIets3Version(mpsVersion: String) : String {
         return findLatestVersion(mpsVersion,"https://projects.itemis.de/nexus/content/repositories/mbeddr/org/iets3", "opensource")
+    }
+
+    fun validate() : List<String> {
+        val errors = LinkedList<String>()
+        if (actualUseMbeddr == false && actualUseIets3 == true) {
+            errors.add("Iets3 requires Mbeddr, you cannot enable Iets3 and disable Mbeddr")
+        }
+        return errors
     }
 
 }

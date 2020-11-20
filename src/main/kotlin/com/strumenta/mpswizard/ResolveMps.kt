@@ -6,6 +6,10 @@ import javax.inject.Inject
 
 open class ResolveMps @Inject constructor(val mpsWizard: MpsWizardPlugin, val extension: MpsWizardExtension) : DefaultTask() {
 
+    init {
+        this.dependsOn.add(ValidateMpsWizardConfiguration.TASK_NAME)
+    }
+
     @TaskAction
     fun execute() {
         mpsWizard.autoSetRepositories(project)

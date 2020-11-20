@@ -8,6 +8,7 @@ open class SetupMpsProject @Inject constructor(val mpsWizard: MpsWizardPlugin,
                                                val extension: MpsWizardExtension) : DefaultTask() {
 
     init {
+        this.dependsOn.add(ValidateMpsWizardConfiguration.TASK_NAME)
         this.dependsOn.add("resolveMps")
         this.dependsOn.add("resolveMpsArtifacts")
     }

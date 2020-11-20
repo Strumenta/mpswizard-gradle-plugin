@@ -35,33 +35,13 @@ class MpsWizardPlugin : Plugin<Project> {
         val extension = project.extensions.create("mpsWizard", MpsWizardExtension::class.java)
 
         // TODO check in configuration if this is necessary
-        //autoSetConfigurations(project)
-        //autoSetDependencies(project)
 
+        addTaskIfDoesNotExist(project, ValidateMpsWizardConfiguration.TASK_NAME, ValidateMpsWizardConfiguration::class.java, extension)
         addTaskIfDoesNotExist(project, "resolveMps", ResolveMps::class.java, extension)
         addTaskIfDoesNotExist(project, "resolveMpsArtifacts", ResolveMpsArtifacts::class.java, extension)
         addTaskIfDoesNotExist(project, "setupMpsProject", SetupMpsProject::class.java, extension)
 
-
-//        project.task("resolveMps") {
-//            it.
-////            it.
-//        }
-
-//        project.task('resolveMps', type= ResolveMps)
-//        project.task('resolveMpsArtifacts', type: ResolveMpsArtifacts)
-//        project.task('setupMpsProject') {
-//            //dependsOn project.resolveMps, project.resolveMpsArtifacts
-//        }
     }
-
-//    private fun getMpsVersion(project: Project, extension: MpsWizardExtension) : String {
-//        // TODO support configuration in mpssetup
-//        // TODO verify if mps dependencies is set and it contains an explicit version
-//        val defaultMpsVersion = "2020.1.3"
-//        println("using MPS version: $defaultMpsVersion")
-//        return defaultMpsVersion
-//    }
 
     private fun checkOnlyOneRun(name: String) : Boolean {
         return if (autosettersRun.contains(name)) {
@@ -105,9 +85,13 @@ class MpsWizardPlugin : Plugin<Project> {
         }
 
         val mpsArtifactsConf = project.findMpsArtifactsConfiguration()!!
-        addDependencyIfNotPresent(project, mpsArtifactsConf, "com.mbeddr", "platform") { extension.actualMbeddrVersion }
-        addDependencyIfNotPresent(project, mpsArtifactsConf, "com.mbeddr", "allScripts") { extension.actualMbeddrVersion }
-        addDependencyIfNotPresent(project, mpsArtifactsConf, "org.iets3", "opensource") { extension.actualIets3Version }
+        if (extension.actualUseMbeddr) {
+            addDependencyIfNotPresent(project, mpsArtifactsConf, "com.mbeddr", "platform") { extension.actualMbeddrVersion }
+            addDependencyIfNotPresent(project, mpsArtifactsConf, "com.mbeddr", "allScripts") { extension.actualMbeddrVersion }
+        }
+        if (extension.actualUseIets3) {
+            addDependencyIfNotPresent(project, mpsArtifactsConf, "org.iets3", "opensource") { extension.actualIets3Version }
+        }
     }
 
     fun autoSetConfigurations(project: Project) {
