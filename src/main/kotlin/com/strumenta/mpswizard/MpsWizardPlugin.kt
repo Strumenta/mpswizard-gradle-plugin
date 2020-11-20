@@ -41,6 +41,8 @@ class MpsWizardPlugin : Plugin<Project> {
         addTaskIfDoesNotExist(project, ValidateMpsWizardConfiguration.TASK_NAME, ValidateMpsWizardConfiguration::class.java, extension)
         addTaskIfDoesNotExist(project, "resolveMps", ResolveMps::class.java, extension)
         addTaskIfDoesNotExist(project, "resolveMpsArtifacts", ResolveMpsArtifacts::class.java, extension)
+        addTaskIfDoesNotExist(project, GenerateMpsProject.TASK_NAME, GenerateMpsProject::class.java, extension)
+        addTaskIfDoesNotExist(project, GenerateLibrariesConf.TASK_NAME, GenerateLibrariesConf::class.java, extension)
         addTaskIfDoesNotExist(project, "setupMpsProject", SetupMpsProject::class.java, extension)
 
     }
@@ -114,6 +116,10 @@ class MpsWizardPlugin : Plugin<Project> {
         } else {
             println("mpsArtifacts configuration already present, not adding")
         }
+    }
+
+    fun mpsDir(project: Project) : File {
+        return File(project.rootDir, "mps")
     }
 
     fun artifactsDir(project: Project) : File {
