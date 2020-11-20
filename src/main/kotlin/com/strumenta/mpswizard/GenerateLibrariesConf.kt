@@ -55,6 +55,7 @@ open class GenerateLibrariesConf @Inject constructor(val mpsWizard: MpsWizardPlu
     </option>
   </component>
 </project>""")
+        println("${librariesXml.absolutePath} created")
     }
 
     companion object {

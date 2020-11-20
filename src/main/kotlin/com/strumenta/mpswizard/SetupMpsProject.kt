@@ -12,6 +12,7 @@ open class SetupMpsProject @Inject constructor(val mpsWizard: MpsWizardPlugin,
         this.dependsOn.add("resolveMps")
         this.dependsOn.add("resolveMpsArtifacts")
         this.dependsOn.add(GenerateMpsProject.TASK_NAME)
+        this.dependsOn.add(GenerateGitignore.TASK_NAME)
         this.group = MPSWIZARD_TASKS_GROUP
         this.description = "Prepare the whole project"
     }

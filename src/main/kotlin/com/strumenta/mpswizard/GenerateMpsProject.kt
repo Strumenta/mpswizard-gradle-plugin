@@ -17,22 +17,27 @@ open class GenerateMpsProject @Inject constructor(val mpsWizard: MpsWizardPlugin
     @TaskAction
     fun execute() {
         val mpsDir = mpsWizard.mpsDir(project)
-        if (!mpsDir.exists()) {
-            println("MPS Project does not exist, creating it")
-            val mpsInternalDir = File(mpsDir, ".mps")
+        val mpsInternalDir = File(mpsDir, ".mps")
+        if (!mpsInternalDir.exists()) {
             mpsInternalDir.mkdirs()
+        }
 
-            val nameFile = File(mpsInternalDir, ".name")
+        val nameFile = File(mpsInternalDir, ".name")
+        if (!nameFile.exists()) {
             nameFile.writeText(project.name)
+            println("${nameFile.absolutePath} created")
+        }
 
-            val modulesFile = File(mpsInternalDir, "modules.xml")
+        val modulesFile = File(mpsInternalDir, "modules.xml")
+        if (!modulesFile.exists()) {
             modulesFile.writeText("""<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="MPSProject">
+    <project version="4">
+    <component name="MPSProject">
     <projectModules>
     </projectModules>
-  </component>
-</project>""")
+    </component>
+    </project>""")
+            println("${modulesFile.absolutePath} created")
         }
     }
 
