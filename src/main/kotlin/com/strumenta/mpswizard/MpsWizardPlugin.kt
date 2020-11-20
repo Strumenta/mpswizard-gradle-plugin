@@ -43,6 +43,7 @@ class MpsWizardPlugin : Plugin<Project> {
         addTaskIfDoesNotExist(project, "resolveMpsArtifacts", ResolveMpsArtifacts::class.java, extension)
         addTaskIfDoesNotExist(project, GenerateMpsProject.TASK_NAME, GenerateMpsProject::class.java, extension)
         addTaskIfDoesNotExist(project, GenerateLibrariesConf.TASK_NAME, GenerateLibrariesConf::class.java, extension)
+        addTaskIfDoesNotExist(project, GenerateGitignore.TASK_NAME, GenerateGitignore::class.java, extension)
         addTaskIfDoesNotExist(project, "setupMpsProject", SetupMpsProject::class.java, extension)
 
     }

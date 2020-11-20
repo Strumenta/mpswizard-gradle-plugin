@@ -38,7 +38,8 @@ open class GenerateGitignore @Inject constructor(val mpsWizard: MpsWizardPlugin,
                 "**/test_gen.caches",
                 ".gradle",
                 ".mps/workspace.xml",
-                ".mps/terminal.xml"
+                ".mps/terminal.xml",
+                "build"
         )
         val missingLines = expectedLines.filter { !lines.contains(it) }
         if (missingLines.isNotEmpty()) {
