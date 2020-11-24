@@ -19,7 +19,7 @@ open class GenerateLibrariesConf @Inject constructor(val mpsWizard: MpsWizardPlu
           <value>
             <Library>
               <option name="name" value="$name" />
-              <option name="path" value="${'$'}PROJECT_DIR/../${'$'}/artifacts/$dirName" />
+              <option name="path" value="${'$'}PROJECT_DIR${'$'}/../artifacts/$dirName" />
             </Library>
           </value>
         </entry>"""

@@ -13,7 +13,7 @@ Example of _build.gradle_ file:
 
 ```
 plugins {
-	id 'com.strumenta.mpswizard' version '1.0.1'
+	id 'com.strumenta.mpswizard' version '1.0.2'
 }
 
 // this is optional
