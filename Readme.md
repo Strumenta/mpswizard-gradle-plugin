@@ -66,6 +66,12 @@ Basically, it would do all the setup for you.
 
 This is licensed under the Apache License V2.0
 
+## How to publish the plugin
+
+```
+./gradlew publishPlugins
+```
+
 ## Acknowledgements
 
 This plugin is heavily inspired by the great best practices developed at Itemis and supported by their 
