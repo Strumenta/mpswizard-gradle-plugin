@@ -61,6 +61,7 @@ class MpsWizardPlugin : Plugin<Project> {
         if (checkOnlyOneRun("repositiories")) return
         println("adding itemis mbeddr repository")
         project.repositories.maven { it.url = URI("https://projects.itemis.de/nexus/content/repositories/mbeddr") }
+        project.repositories.maven { it.url = URI("https://repo1.maven.org/maven2") }
     }
 
     private fun addDependencyIfNotPresent(project: Project, configuration: Configuration,

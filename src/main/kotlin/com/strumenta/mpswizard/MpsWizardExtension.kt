@@ -85,6 +85,7 @@ open class MpsWizardExtension {
         var approximateMatchVersion : String? = null
         for (version in versions) {
             val selected = actualMajorMpsVersion == null || version.startsWith("${actualMajorMpsVersion}.")
+                    || version.startsWith("${actualMajorMpsVersion}-")
             if (selected) {
                 val pom = URL("$baseUrl/${componentName}/$version/$componentName-$version.pom").readAsXml()
                 val dependenciesNode = pom.documentElement.getElementsByTagName("dependencies").item(0) as Element
