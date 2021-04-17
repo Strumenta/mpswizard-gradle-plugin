@@ -97,6 +97,9 @@ class MpsWizardPlugin : Plugin<Project> {
         if (extension.actualUseIets3) {
             addDependencyIfNotPresent(project, mpsArtifactsConf, "org.iets3", "opensource") { extension.actualIets3Version }
         }
+        if (extension.actualMPSServer) {
+            addDependencyIfNotPresent(project, mpsArtifactsConf, "com.strumenta.mpsserver", "mpsserver-core") { extension.actualMPSServerVersion }
+        }
     }
 
     fun autoSetConfigurations(project: Project) {

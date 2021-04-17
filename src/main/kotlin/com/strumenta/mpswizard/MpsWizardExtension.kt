@@ -68,6 +68,15 @@ open class MpsWizardExtension {
     val actualIets3Version : String
         get() =  iets3Version ?: findLatestIets3Version(actualMpsVersion)
 
+    // MPSServer configuration
+
+    var useMPSServer : Boolean? = null
+    var MPSServerVersion : String? = null
+    val actualMPSServer
+        get() = useMPSServer == true || MPSServerVersion != null
+    val actualMPSServerVersion : String
+        get() =  MPSServerVersion ?: findLatestMPSServerVersion(actualMpsVersion)
+
     private fun findLatestVersion(mpsVersion: String, baseUrl: String, componentName: String) : String {
         val actualMajorMpsVersion = actualMajorMpsVersion
 
@@ -95,7 +104,7 @@ open class MpsWizardExtension {
                 }
             }
         }
-        return exactMatchVersion ?: approximateMatchVersion ?: throw RuntimeException("No match found")
+        return exactMatchVersion ?: approximateMatchVersion ?: throw RuntimeException("No match found for components ${componentName} at ${baseUrl}, using MPS Version ${mpsVersion}")
     }
 
     fun findLatestMbeddrVersion(mpsVersion: String) : String {
@@ -104,6 +113,10 @@ open class MpsWizardExtension {
 
     fun findLatestIets3Version(mpsVersion: String) : String {
         return findLatestVersion(mpsVersion,"https://projects.itemis.de/nexus/content/repositories/mbeddr/org/iets3", "opensource")
+    }
+
+    fun findLatestMPSServerVersion(mpsVersion: String) : String {
+        return findLatestVersion(mpsVersion,"https://repo1.maven.org/maven2/com/strumenta/mpsserver", "mpsserver-core")
     }
 
     fun validate() : List<String> {
