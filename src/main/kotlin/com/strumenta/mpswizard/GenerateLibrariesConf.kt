@@ -44,6 +44,10 @@ open class GenerateLibrariesConf @Inject constructor(val mpsWizard: MpsWizardPlu
             entries.add(entry("iets3.opensource", "org.iets3.opensource"))
         }
 
+        if (extension.actualMPSServer) {
+            entries.add(entry("mpsserver-core", "mpsserver-core"))
+        }
+
         val librariesXml = File(mpsInternalDir, "libraries.xml")
         librariesXml.writeText("""<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">

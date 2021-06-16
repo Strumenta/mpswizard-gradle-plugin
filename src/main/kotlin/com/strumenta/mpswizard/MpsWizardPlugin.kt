@@ -61,6 +61,7 @@ class MpsWizardPlugin : Plugin<Project> {
         if (checkOnlyOneRun("repositiories")) return
         println("adding itemis mbeddr repository")
         project.repositories.maven { it.url = URI("https://projects.itemis.de/nexus/content/repositories/mbeddr") }
+        project.repositories.maven { it.url = URI("https://repo1.maven.org/maven2") }
     }
 
     private fun addDependencyIfNotPresent(project: Project, configuration: Configuration,
@@ -96,6 +97,9 @@ class MpsWizardPlugin : Plugin<Project> {
         }
         if (extension.actualUseIets3) {
             addDependencyIfNotPresent(project, mpsArtifactsConf, "org.iets3", "opensource") { extension.actualIets3Version }
+        }
+        if (extension.actualMPSServer) {
+            addDependencyIfNotPresent(project, mpsArtifactsConf, "com.strumenta.mpsserver", "mpsserver-core") { extension.actualMPSServerVersion }
         }
     }
 
