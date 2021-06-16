@@ -7,6 +7,7 @@ import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileVisitDetails
 import org.gradle.api.file.FileVisitor
+import org.gradle.internal.service.scopes.Scopes
 import java.io.File
 import java.net.URI
 import java.nio.file.Files
@@ -16,10 +17,6 @@ private fun Project.findMpsConfiguration() = this.findConfiguration("mps")
 private fun Project.findMpsArtifactsConfiguration() = this.findConfiguration("mpsArtifacts")
 
 const val MPSWIZARD_TASKS_GROUP = "MPS Wizard"
-
-// Configuration:
-//
-// mpssetup { autosetconfigurations: true, mpsVersion: 2020.1.4 }
 
 class MpsWizardPlugin : Plugin<Project> {
     var autosettersRun = HashSet<String>()
@@ -33,8 +30,11 @@ class MpsWizardPlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) {
+        val extension: MpsWizardExtension =
+            project.extensions.create<MpsWizardExtension>("mpsWizard", MpsWizardExtension::class.java)
+        project.gradle.projectsEvaluated {
 
-        val extension = project.extensions.create("mpsWizard", MpsWizardExtension::class.java)
+        }
 
         // TODO check in configuration if this is necessary
 

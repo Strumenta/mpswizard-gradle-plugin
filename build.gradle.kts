@@ -1,11 +1,11 @@
 group = "com.strumenta"
-version = "1.0.4-SNAPSHOT"
+version = "1.0.5-SNAPSHOT"
 description = "An opinionated plugin to simplify the life of MPS developers"
 
-val kotlinVersion = "1.4.10"
+val kotlinVersion = "1.4.31"
 
 plugins {
-  kotlin("jvm") version "1.4.10"
+  kotlin("jvm") version "1.4.31"
   id("java-gradle-plugin")
   id("maven-publish")
   id("com.gradle.plugin-publish") version "0.11.0"

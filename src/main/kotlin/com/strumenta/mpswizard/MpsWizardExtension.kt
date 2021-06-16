@@ -45,11 +45,8 @@ open class MpsWizardExtension {
     // MPS configuration
 
     var mpsVersion : String? = null
-    var mpsserverPluginVersion : String? = null
     val actualMpsVersion : String
         get() = mpsVersion ?: "2020.3.3"
-    val actualMpsserverPluginVersion : String
-        get() = mpsserverPluginVersion ?: "1.1.15"
     val actualMajorMpsVersion : String?
         get() =  deriveMajorMpsVersion(actualMpsVersion)
 
@@ -74,11 +71,18 @@ open class MpsWizardExtension {
     // MPSServer configuration
 
     var useMPSServer : Boolean? = null
+        set(value) {
+            println("SETTING useMPSServer $value (was $field)")
+            field = value
+        }
     var MPSServerVersion : String? = null
     val actualMPSServer
         get() = useMPSServer == true || MPSServerVersion != null
     val actualMPSServerVersion : String
         get() =  MPSServerVersion ?: findLatestMPSServerVersion(actualMpsVersion)
+    var mpsserverPluginVersion : String? = null
+    val actualMpsserverPluginVersion : String
+        get() = mpsserverPluginVersion ?: "1.1.15"
 
     private fun findLatestVersion(mpsVersion: String, baseUrl: String, componentName: String) : String {
         val actualMajorMpsVersion = actualMajorMpsVersion
@@ -125,7 +129,7 @@ open class MpsWizardExtension {
 
     fun validate() : List<String> {
         val errors = LinkedList<String>()
-        if (actualUseMbeddr == false && actualUseIets3 == true) {
+        if (!actualUseMbeddr && actualUseIets3) {
             errors.add("Iets3 requires Mbeddr, you cannot enable Iets3 and disable Mbeddr")
         }
         return errors

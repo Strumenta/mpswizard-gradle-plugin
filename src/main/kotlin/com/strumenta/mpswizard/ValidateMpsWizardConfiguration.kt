@@ -1,12 +1,14 @@
 package com.strumenta.mpswizard
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import java.lang.RuntimeException
 import javax.inject.Inject
 
-open class ValidateMpsWizardConfiguration @Inject constructor(val mpsWizard: MpsWizardPlugin,
-                                                              val extension: MpsWizardExtension) : DefaultTask() {
+open class ValidateMpsWizardConfiguration @Inject constructor(@field:Input val mpsWizard: MpsWizardPlugin,
+                                                              @field:Input val extension: MpsWizardExtension) : DefaultTask() {
 
     init {
         this.group = MPSWIZARD_TASKS_GROUP
