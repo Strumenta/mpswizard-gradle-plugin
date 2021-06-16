@@ -45,8 +45,11 @@ open class MpsWizardExtension {
     // MPS configuration
 
     var mpsVersion : String? = null
+    var mpsserverPluginVersion : String? = null
     val actualMpsVersion : String
-        get() = mpsVersion ?: "2020.1.3"
+        get() = mpsVersion ?: "2020.3.3"
+    val actualMpsserverPluginVersion : String
+        get() = mpsserverPluginVersion ?: "1.1.15"
     val actualMajorMpsVersion : String?
         get() =  deriveMajorMpsVersion(actualMpsVersion)
 
