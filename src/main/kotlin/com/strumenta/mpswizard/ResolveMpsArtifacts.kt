@@ -15,6 +15,7 @@ open class ResolveMpsArtifacts @Inject constructor(@field:Input val mpsWizard: M
 
     @TaskAction
     fun execute() {
+        println("MpsWizard > ResolveMpsArtifacts")
         mpsWizard.autoSetRepositories(project)
         mpsWizard.autoSetConfigurations(project)
         mpsWizard.autoSetDependencies(project, extension)

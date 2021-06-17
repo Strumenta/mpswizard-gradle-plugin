@@ -100,6 +100,7 @@ class MpsWizardPlugin : Plugin<Project> {
         }
         if (extension.actualMPSServer) {
             addDependencyIfNotPresent(project, mpsArtifactsConf, "com.strumenta.mpsserver", "mpsserver-core") { extension.actualMPSServerVersion }
+            addDependencyIfNotPresent(project, mpsArtifactsConf, "com.strumenta.mpsserver", "mpsserver-launcher") { extension.actualMPSServerVersion }
         }
     }
 
