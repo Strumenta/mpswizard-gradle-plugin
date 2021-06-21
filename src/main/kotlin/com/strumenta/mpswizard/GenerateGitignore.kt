@@ -1,12 +1,14 @@
 package com.strumenta.mpswizard
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 import java.util.*
 import javax.inject.Inject
 
-open class GenerateGitignore @Inject constructor(val mpsWizard: MpsWizardPlugin, val extension: MpsWizardExtension) : DefaultTask() {
+open class GenerateGitignore @Inject constructor(
+    @Internal val mpsWizard: MpsWizardPlugin, @Internal val extension: MpsWizardExtension) : DefaultTask() {
 
     init {
         this.dependsOn.add(ValidateMpsWizardConfiguration.TASK_NAME)
