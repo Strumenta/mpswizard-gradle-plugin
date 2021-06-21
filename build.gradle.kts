@@ -1,5 +1,5 @@
 group = "com.strumenta"
-version = "1.0.5-SNAPSHOT"
+version = "1.0.5"
 description = "An opinionated plugin to simplify the life of MPS developers"
 
 val kotlinVersion = "1.4.31"
