@@ -1,5 +1,5 @@
 group = "com.strumenta"
-version = "1.0.6-SNAPSHOT"
+version = "1.0.6"
 description = "An opinionated plugin to simplify the life of MPS developers"
 
 val kotlinVersion = "1.4.31"
@@ -16,7 +16,6 @@ pluginBundle {
   vcsUrl = "https://github.com/Strumenta/mpswizard-gradle-plugin.git"
   tags = listOf("Jetbrains MPS")
 }
-
 
 gradlePlugin {
   plugins {
